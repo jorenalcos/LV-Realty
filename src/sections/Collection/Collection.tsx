@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight } from "lucide-react";
@@ -6,42 +6,77 @@ import PropertyDetail, { type Property, } from "../../components/PropertyDetail/
 
 gsap.registerPlugin(ScrollTrigger);
 
-const properties = [
+const properties: Property[] = [
   {
     number: "01",
     name: "THE ASTER",
     location: "MAKATI, PHILIPPINES",
     category: "PRIVATE RESIDENCE",
     price: "₱ 85,000,000",
+
     image:
       "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2000&q=90",
+
+    gallery: [
+      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2000&q=90",
+      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=2000&q=90",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90",
+      "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=2000&q=90",
+    ],
   },
+
   {
     number: "02",
     name: "THE VELA",
     location: "CEBU, PHILIPPINES",
     category: "OCEAN RESIDENCE",
     price: "₱ 62,000,000",
+
     image:
       "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2000&q=90",
+
+    gallery: [
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2000&q=90",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=2000&q=90",
+      "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=2000&q=90",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=2000&q=90",
+    ],
   },
+
   {
     number: "03",
     name: "THE NOIR",
     location: "TAGUIG, PHILIPPINES",
     category: "URBAN ESTATE",
     price: "₱ 120,000,000",
+
     image:
       "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=2000&q=90",
+
+    gallery: [
+      "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=2000&q=90",
+      "https://images.unsplash.com/photo-1600607688969-a5bfcd646154?auto=format&fit=crop&w=2000&q=90",
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90",
+      "https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=2000&q=90",
+    ],
   },
+
   {
     number: "04",
     name: "THE SOLIS",
     location: "BATANGAS, PHILIPPINES",
     category: "PRIVATE VILLA",
     price: "₱ 98,000,000",
+
     image:
       "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90",
+
+    gallery: [
+      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2000&q=90",
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2000&q=90",
+      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=2000&q=90",
+      "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=2000&q=90",
+    ],
   },
 ];
 
@@ -59,6 +94,9 @@ export default function Collection({
 
   const [selectedProperty, setSelectedProperty] =
     useState<Property | null>(null);
+
+  const [selectedPropertyIndex, setSelectedPropertyIndex] =
+    useState(0);
 
   const [activeProperty, setActiveProperty] = useState(0);
 
@@ -158,6 +196,32 @@ export default function Collection({
     return () => ctx.revert();
   }, []);
 
+  const goToPreviousProperty = () => {
+    setSelectedPropertyIndex((current) => {
+      const nextIndex =
+        current === 0
+          ? properties.length - 1
+          : current - 1;
+
+      setSelectedProperty(properties[nextIndex]);
+
+      return nextIndex;
+    });
+  };
+
+  const goToNextProperty = () => {
+    setSelectedPropertyIndex((current) => {
+      const nextIndex =
+        current === properties.length - 1
+          ? 0
+          : current + 1;
+
+      setSelectedProperty(properties[nextIndex]);
+
+      return nextIndex;
+    });
+  };
+
   return (
     <section
       id="collection"
@@ -200,7 +264,7 @@ export default function Collection({
         ref={trackRef}
         className="flex h-full items-center gap-10 pl-[58vw] pr-[12vw] pt-12"
       >
-        {properties.map((property) => (
+        {properties.map((property, index) => (
           <article
             key={property.number}
             data-property-card
@@ -248,6 +312,7 @@ export default function Collection({
                 type="button"
                 onClick={() => {
                   setSelectedProperty(property);
+                  setSelectedPropertyIndex(index);
                   onPropertyOpen();
                 }}
                 className="mt-7 flex items-center gap-3 border border-white/30 px-5 py-3 text-[9px] tracking-[0.25em] text-lv-cream transition-all duration-500 group-hover:border-lv-gold group-hover:text-lv-gold"
@@ -291,14 +356,18 @@ export default function Collection({
       <div className="absolute bottom-10 right-5 z-30 hidden rotate-90 origin-bottom-right text-[8px] tracking-[0.3em] text-white/20 lg:block">
         LV REALTY — SELECTED COLLECTION
       </div>
-
+      
       <PropertyDetail
         property={selectedProperty}
         isOpen={selectedProperty !== null}
+        currentIndex={selectedPropertyIndex}
+        totalProperties={properties.length}
         onClose={() => {
           setSelectedProperty(null);
           onPropertyClose();
         }}
+        onPrevious={goToPreviousProperty}
+        onNext={goToNextProperty}
       />
     </section>
   );
