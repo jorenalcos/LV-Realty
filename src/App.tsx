@@ -2,27 +2,24 @@ import Navigation from "./components/Navigation/Navigation";
 import SmoothScroll from "./components/SmoothScroll/SmoothScroll";
 import Hero from "./sections/Hero/Hero";
 import Collection from "./sections/Collection/Collection";
+import { useState } from "react";
 
 function App() {
+  const [propertyOpen, setPropertyOpen] =
+    useState(false);
+
   return (
     <SmoothScroll>
       <main className="bg-lv-black">
-        <Navigation />
+        <Navigation hidden={propertyOpen} />
 
         <section id="home">
           <Hero />
         </section>
 
-        <Collection />
-
-        <section
-          id="about"
-          className="min-h-screen bg-lv-black"
-        />
-
-        <section
-          id="contact"
-          className="min-h-screen bg-lv-black"
+        <Collection
+          onPropertyOpen={() => setPropertyOpen(true)}
+          onPropertyClose={() => setPropertyOpen(false)}
         />
       </main>
     </SmoothScroll>

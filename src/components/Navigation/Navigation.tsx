@@ -3,7 +3,13 @@ import gsap from "gsap";
 import { Menu } from "lucide-react";
 import MenuOverlay from "./MenuOverlay";
 
-export default function Navigation() {
+interface NavigationProps {
+  hidden?: boolean;
+}
+
+export default function Navigation({
+  hidden = false,
+}: NavigationProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navRef = useRef<HTMLElement>(null);
@@ -11,21 +17,29 @@ export default function Navigation() {
   useLayoutEffect(() => {
     if (!navRef.current) return;
 
-    gsap.fromTo(
-      navRef.current,
-      {
+    if (hidden) {
+      gsap.to(navRef.current, {
         opacity: 0,
         y: -20,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        delay: 0.2,
-        ease: "power3.out",
-      },
-    );
-  }, []);
+        duration: 0.35,
+        ease: "power2.inOut",
+        overwrite: true,
+        pointerEvents: "none",
+      });
+
+      return;
+    }
+
+    gsap.to(navRef.current, {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      delay: 0.1,
+      ease: "power3.out",
+      overwrite: true,
+      pointerEvents: "auto",
+    });
+  }, [hidden]);
 
   return (
     <>
