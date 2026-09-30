@@ -2,6 +2,7 @@ import { useLayoutEffect, useRef } from "react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import HeroScene from "./HeroScene";
+import { useSmoothScroll } from "../../components/SmoothScroll/SmoothScroll";
 
 export default function Hero() {
   const heroRef = useRef<HTMLElement>(null);
@@ -12,6 +13,8 @@ export default function Hero() {
   const actionsRef = useRef<HTMLDivElement>(null);
   const indexRef = useRef<HTMLDivElement>(null);
   const sideLabelRef = useRef<HTMLDivElement>(null);
+
+  const { scrollTo } = useSmoothScroll();
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -200,8 +203,14 @@ export default function Hero() {
             className="mt-10 flex flex-col gap-6 sm:flex-row sm:items-center"
           >
             <a
-              href="#collection"
               className="group inline-flex w-fit items-center gap-4 border border-lv-gold bg-lv-gold px-6 py-4 text-[10px] font-medium tracking-[0.2em] text-lv-black transition-all duration-300 hover:bg-transparent hover:text-lv-gold"
+              onClick={() => {
+                window.history.replaceState(null, "", "#collection");
+
+                scrollTo("#collection", {
+                  duration: 1.35,
+                });
+              }}
             >
               EXPLORE PROPERTIES
 
