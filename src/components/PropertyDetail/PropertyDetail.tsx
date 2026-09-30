@@ -188,8 +188,7 @@ export default function PropertyDetail({
   const changeGalleryImage = (index: number) => {
     const total = property.gallery.length;
 
-    const nextIndex =
-      (index + total) % total;
+    const nextIndex = (index + total) % total;
 
     if (nextIndex === activeImage) {
       return;

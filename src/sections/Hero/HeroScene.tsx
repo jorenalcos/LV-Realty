@@ -56,14 +56,9 @@ function LuxuryBuilding() {
     const idleRotation = time * 0.05;
 
     // Mouse interaction
-    const targetRotationY =
-      idleRotation + mouseX * 0.25;
-
-    const targetRotationX =
-      mouseY * 0.12;
-
-    const targetRotationZ =
-      -mouseX * 0.04;
+    const targetRotationY = idleRotation + mouseX * 0.25;
+    const targetRotationX = mouseY * 0.12;
+    const targetRotationZ = -mouseX * 0.04;
 
     group.current.rotation.y = THREE.MathUtils.lerp(
       group.current.rotation.y,
@@ -84,8 +79,7 @@ function LuxuryBuilding() {
     );
 
     // Floating
-    group.current.position.y =
-      0.6 + Math.sin(time * 0.7) * 0.06;
+    group.current.position.y = 0.6 + Math.sin(time * 0.7) * 0.06;
 
     // Subtle mouse parallax
     group.current.position.x = THREE.MathUtils.lerp(

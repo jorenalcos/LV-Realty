@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { ArrowDown, ArrowUpRight } from "lucide-react";
 import gsap from "gsap";
 import HeroScene from "./HeroScene";
